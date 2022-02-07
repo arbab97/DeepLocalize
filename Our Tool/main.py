@@ -8,9 +8,8 @@ from model.network import *
 import pandas as pd
 from sklearn.preprocessing import Normalizer
 from sklearn.model_selection import train_test_split
+np.random.seed(1)
 # ! Warning: All warnings are ignored. 
-
-
 
 custom_data_path='/media/rabi/Data/11111/Task 99/deepcrime/datasets/custom_data.csv'
 data = pd.read_csv(custom_data_path)
@@ -48,11 +47,9 @@ test_y.head()
 print("here")
 #  Mapping: x_train->data_x; y_train->labels; x_test-> test; y_test->test_y
 
-
 #To adjust the format: 
 training_data = data_x.reshape(455, 1, 1, 29)
 training_labels = np.array(labels).reshape(455,1)
-
 
 lr = 0.01
 checker = False
@@ -70,10 +67,8 @@ print('Training Custom Network......')
 net.compile(loss='binary_crossentropy',
               optimizer='sgd',
               metrics=['accuracy'])
-net.fit(training_data, training_labels, 2, 5)
+net.fit(training_data, training_labels, 32, 2) #batch size 1 and 5 epochs
 print("Done")
-
-
 
 #___________________________________________________________________________________________________
 # #Base Model

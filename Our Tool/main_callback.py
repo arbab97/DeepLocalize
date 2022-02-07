@@ -1,5 +1,7 @@
 
 from __future__ import print_function
+import warnings
+warnings.filterwarnings("ignore")
 import keras, sys
 import os
 from keras.datasets import mnist
@@ -14,34 +16,19 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import Normalizer
 from sklearn.model_selection import train_test_split
 # ! Warning: All warnings are ignored. 
-import warnings
-warnings.filterwarnings("ignore")
-# from tensorflow.python.keras.datasets import mnist
-# from tensorflow.keras import activations
-# import keras
+np.random.seed(1)
 
 custom_data_path='/media/rabi/Data/11111/Task 99/deepcrime/datasets/custom_data.csv'
 data = pd.read_csv(custom_data_path)
-# data.head()
-# data.isnull().sum()
 
 data,test = train_test_split(data,test_size = 0.2)
-#data,validation = train_test_split(data,test_size = 0.2)
-# data.shape
 
 data = data.drop(columns = ['id'])
-#data['diagnosis'].unique()   #comment this
 
 labels = data['diagnosis']
 data.drop(columns = ['diagnosis'],inplace = True)
 data = data.iloc[:,0:29]
 #data.head() 
-
-# daig = validation['diagnosis']
-# validation.drop(columns = ['id','diagnosis'],inplace=True)
-# validation.iloc[:,0:29]
-
-# validation = validation.iloc[:,0:29]
 
 data_x = data
 
@@ -65,7 +52,7 @@ print("here")
 #  Mapping: x_train->data_x; y_train->labels; x_test-> test; y_test->test_y
 
 # learn rate should be 0.01
-epochs = 300   # Initial was 600
+epochs = 2   # Initial was 600
 batch_size = 32 # Default of mnist was 128
 # Foramt: callback = keras.callbacks.DeepLocalize(inputs, outputs, layer_number, batch_size, startTime)
 callback = keras.callbacks.DeepLocalize(data_x, labels, 5, batch_size, 0)
@@ -75,9 +62,9 @@ model.add( Dense(12,input_dim =29,activation = 'relu'))  #Warning: The mnist one
 model.add(Dropout(0.5))
 model.add(Dense(5,activation = 'relu'))
 model.add(Dropout(0.5))
-model.add(Dense(1,activation = 'softmax'))
+model.add(Dense(1,activation = 'exponential'))
 
-model.compile(loss = keras.losses.binary_crossentropy,optimizer =keras.optimizers.Adam(),metrics = ['accuracy'])
+model.compile(loss = keras.losses.binary_crossentropy,optimizer =keras.optimizers.Adam(lr=0.001),metrics = ['accuracy'])
 # New Mapping: x_train->data_x; y_train->labels; x_test-> test; y_test->test_y
 model.fit(data_x, labels, batch_size=batch_size, epochs=epochs, verbose=1, callbacks=[callback])
 

@@ -1,6 +1,5 @@
 import numpy as np
 from tensorflow.python.keras.datasets import mnist
-
 from model.loss import *
 from model.layers import *
 from model.network import *
